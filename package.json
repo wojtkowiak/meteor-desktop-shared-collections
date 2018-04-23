@@ -1,0 +1,55 @@
+{
+  "name": "meteor-desktop-shared-collections",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "description": "Meteor Desktop",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "ava tests/functional/**/*.js -s",
+    "test-watch": "ava tests/functional/**/*.js --watch --source src --verbose -s",
+    "lint": "eslint src tests plugins",
+    "build": "babel src --out-dir dist --source-maps inline --copy-files",
+    "build-watch": "babel src --watch --out-dir dist --source-maps inline --copy-files",
+    "version": "node dist/scripts/propagateVersion.js && git add plugins README.md",
+    "postversion": "npm run publish-all",
+    "publish-plugins": "(cls || reset) && cd plugins/localstorage && (meteor publish || echo)",
+    "prepublish": "npm run build || echo",
+    "publish-all": "npm run publish-plugins && npm publish"
+  },
+  "author": "Bartosz Wojtkowiak <bartosz@wojtkowiak.it>",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "0.25.0",
+    "babel-cli": "6.26.0",
+    "babel-preset-node6": "11.0.0",
+    "eslint": "3.8.1",
+    "eslint-config-airbnb-base": "9.0.0",
+    "eslint-plugin-import": "2.0.1",
+    "spectron": "3.8.0",
+    "shelljs": "0.7.4",
+    "electron": "1.8.4",
+    "meteor-desktop-test-suite": "0.1.0"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wojtkowiak/meteor-desktop-localstorage"
+  },
+  "keywords": [
+    "electron",
+    "meteor",
+    "packager",
+    "localstorage",
+    "local",
+    "storage"
+  ],
+  "bugs": {
+    "url": "https://github.com/wojtkowiak/meteor-desktop-localstorage/issues"
+  },
+  "homepage": "https://github.com/wojtkowiak/meteor-desktop-localstorage",
+  "meteorDependencies": {
+    "omega:meteor-desktop-shared-collections": "@version"
+  }
+}

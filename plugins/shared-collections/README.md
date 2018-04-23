@@ -1,0 +1,1 @@
+## Meteor Desktop Shared Collections
