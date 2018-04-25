@@ -51,6 +51,17 @@ export default class LocalStorage {
             this.collections['test'].insert({ name: 'wowow'});
 
         });
+        this.module.on('wow2', (event) => {
+            console.log('wow2');
+            this.collections['test'].remove({});
+
+        });
+        this.module.on('wow3', (event) => {
+            console.log('wow3');
+            this.collections['test'].update({}, { $set: { name: 'testst' } }, { many: true });
+
+        });
+
 
         this.module.on('shareCollection', (event, fetchId, name) => {
             if (name in this.collections) {
@@ -79,9 +90,28 @@ class Collection {
     }
 
     insert(document, callback) {
-        console.log('fetch');
+        console.log('inser');
         this.$.module.fetch('insert', 2000, this.name, document)
-            .then((args) => { console.log('fetch response', args); })
-            .catch(console.error);
+            .then((args) => { console.log('fetch response', args); callback(...args); })
+            .catch(callback);
     }
+
+    remove(selector, callback) {
+        console.log('remove');
+        this.$.module.fetch('remove', 2000, this.name, selector)
+            .then((args) => { console.log('remove response', args); callback(...args); })
+            .catch(callback);
+    }
+
+    update(selector, modifier, options, callback) {
+        if (!callback && typeof options === 'function') {
+            callback = options;
+            options = undefined;
+        }
+        console.log('update');
+        this.$.module.fetch('update', 2000, this.name, selector, modifier, options)
+            .then((args) => { console.log('update response', args); callback(...args); })
+            .catch(callback);
+    }
+
 }

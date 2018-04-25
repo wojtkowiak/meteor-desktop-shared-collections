@@ -7,13 +7,31 @@ if (Meteor.isDesktop) {
         Desktop.sharedCollections[name].insert(document, (error, id) => {
             console.log(error, id);
             Desktop.respond('collections', 'insert', fetchId, [error, id]);
-
         });
     });
 
-    Desktop.shareCollection = function(collection) {
-        Desktop.sharedCollections[collection._name] = collection;
-        Desktop.fetch('collections', 'shareCollection', undefined, collection._name)
+    Desktop.on('collections', 'remove', (event, fetchId, name, selector) => {
+        Desktop.sharedCollections[name].remove(selector, (error, id) => {
+            console.log(error, id);
+            Desktop.respond('collections', 'remove', fetchId, [error, id]);
+        });
+    });
+
+
+    Desktop.on('collections', 'update', (event, fetchId, name, selector, modifier, options) => {
+        const args = [selector, modifier];
+        if (typeof options === 'object') {
+            args.push(options);
+        }
+        Desktop.sharedCollections[name].update(...args, (error, id) => {
+            console.log(error, id);
+            Desktop.respond('collections', 'update', fetchId, [error, id]);
+        });
+    });
+
+    Desktop.shareCollection = function(collection, name) {
+        Desktop.sharedCollections[name] = collection;
+        Desktop.fetch('collections', 'shareCollection', undefined, name)
             .then(result => {console.log(result);});
     };
 
